@@ -41,6 +41,12 @@ class ResubmitBaseWidget(FileInput):
 
     def output_extra_data(self, value):
         output = ''
+        if value and self.cache_key:
+            custom_filename = f' <span class="item_name">{self.filename_from_value(value)}</span>'
+            output += custom_filename
+        else:
+            output += "<span class='item_name'></span>"
+
         if self.cache_key:
             output += forms.HiddenInput().render(
                 self.input_name,
@@ -48,6 +54,7 @@ class ResubmitBaseWidget(FileInput):
                 {},
             )
         return output
+
 
     def filename_from_value(self, value):
         if value:
