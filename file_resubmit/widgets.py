@@ -5,12 +5,12 @@ import uuid
 from django import forms
 from django.forms.widgets import FILE_INPUT_CONTRADICTION
 from django.conf import settings
-from django.forms import ClearableFileInput
+from django.forms import FileInput
 from django.utils.safestring import mark_safe
 
 from .cache import FileCache
 
-class ResubmitBaseWidget(ClearableFileInput):
+class ResubmitBaseWidget(FileInput):
     def __init__(self, attrs=None, field_type=None):
         super(ResubmitBaseWidget, self).__init__()
         self.cache_key = ''
@@ -57,11 +57,10 @@ class ResubmitBaseWidget(ClearableFileInput):
 
 
 class ResubmitFileWidget(ResubmitBaseWidget):
-    template_with_initial = getattr(ClearableFileInput, 'template_with_initial', '')
-    template_with_clear = getattr(ClearableFileInput, 'template_with_clear', '')
+    template_with_initial = getattr(FileInput, 'template_with_initial', '')
 
     def render(self, name, value, attrs=None):
-        output = ClearableFileInput.render(self, name, value, attrs)
+        output = FileInput.render(self, name, value, attrs)
         output += self.output_extra_data(value)
         return mark_safe(output)
 
